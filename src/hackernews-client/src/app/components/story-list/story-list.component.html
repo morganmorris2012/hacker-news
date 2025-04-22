@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="search-container">
+    <input
+      type="text"
+      class="search-input"
+      [formControl]="searchControl"
+      placeholder="Search stories..."
+      [attr.aria-label]="'Search stories'"
+    />
+  </div>
+
+  <div class="stories-container">
+    <div *ngIf="isLoading$ | async" class="loading-overlay">
+      <div class="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading stories...</div>
+      </div>
+    </div>
+
+    <div *ngIf="error$ | async as error" class="error">
+      {{ error }}
+    </div>
+
+    <div *ngFor="let story of stories$ | async" class="story-card">
+      <h2 class="story-title">
+        <a [href]="story.url" target="_blank" rel="noopener noreferrer">
+          {{ story.title }}
+        </a>
+      </h2>
+      <div class="story-meta">
+        <span>👤 {{ story.by }}</span>
+        <span>⭐ {{ story.score }} points</span>
+        <span>💬 {{ story.descendants }} comments</span>
+        <span>🕒 {{ story.time | date : "medium" }}</span>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <button
+        class="page-button"
+        [disabled]="currentPage === 1 || (isLoading$ | async)"
+        (click)="onPageChange(currentPage - 1)"
+      >
+        Previous
+      </button>
+      <button class="page-button active" [disabled]="isLoading$ | async">
+        Page {{ currentPage }}
+      </button>
+      <button
+        class="page-button"
+        [disabled]="
+          ((stories$ | async) ?? []).length < pageSize || (isLoading$ | async)
+        "
+        (click)="onPageChange(currentPage + 1)"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>
