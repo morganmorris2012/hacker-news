@@ -43,7 +43,7 @@ src/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/hackernews-reader.git
+   git clone https://github.com/morganmorris2012/hackernews-reader.git
    cd hackernews-reader
    ```
 
